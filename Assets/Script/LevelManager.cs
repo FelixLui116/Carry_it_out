@@ -11,6 +11,11 @@ public class LevelManager : MonoBehaviour
 
     public GameObject playerDropPoint;
     public GameObject playerDropPoint_2;
+
+    
+     [SerializeField] private Color playerDropPoint;
+     [SerializeField] private Color playerDropPoint_2;
+
     public GameObject clonePool;
     
     public GameObject OutBoard_Object;

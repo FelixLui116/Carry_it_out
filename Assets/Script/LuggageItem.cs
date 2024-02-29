@@ -68,31 +68,33 @@ public class LuggageItem : MonoBehaviour
 
     void SetLuggageColor()
     {
+        Color color_ = new Color(0.0f, 0, 0.0f);
         // Set the luggage color based on the enum value
         switch (luggageColor)
         {
             case ColorType.red:
-                GetComponent<Renderer>().material.color = Color.red;
+                color_ = Color.red;
                 break;
             case ColorType.blue:
-                GetComponent<Renderer>().material.color = Color.blue;
+                color_ = Color.blue;
                 break;
             case ColorType.green:
-                GetComponent<Renderer>().material.color = Color.green;
+                color_= Color.green;
                 break;
             case ColorType.yellow:
-                GetComponent<Renderer>().material.color = Color.yellow;
+                color_= Color.yellow;
                 break;
             case ColorType.purple:
-                GetComponent<Renderer>().material.color = new Color(0.5f, 0, 0.5f); // Purple
+                color_ = new Color(0.5f, 0, 0.5f); // Purple
                 break;
             case ColorType.cyan:
-                GetComponent<Renderer>().material.color = Color.cyan;
+                color_ = Color.cyan;
                 break;
             case ColorType.orange:
-                GetComponent<Renderer>().material.color = new Color(1, 0.5f, 0); // Orange
+                color_ = new Color(1, 0.5f, 0); // Orange
                 break;
         }
+        GetComponent<Renderer>().material.color = color_;
     }
 
     void OnCollisionEnter(Collision collision)
