@@ -12,9 +12,16 @@ public class LevelManager : MonoBehaviour
     public GameObject playerDropPoint;
     public GameObject playerDropPoint_2;
 
-    
-     [SerializeField] private Color playerDropPoint;
-     [SerializeField] private Color playerDropPoint_2;
+    [SerializeField] private string [] luaggage_color = new string[7] {"red", "blue", "green", "yellow", "purple", "cyan", "orange"};
+
+
+    private string GetRandomColor()
+    {
+        // Generate a random index within the bounds of the array
+        int randomIndex = Random.Range(0, luaggage_color.Length);
+        // Return the color at the random index
+        return luaggage_color[randomIndex];
+    }
 
     public GameObject clonePool;
     
@@ -50,7 +57,7 @@ public class LevelManager : MonoBehaviour
 
             clonedObject.transform.SetParent(clonePool_Obj.transform.GetChild(i));
             clonedObject.transform.position = clonePool_Obj.transform.GetChild(i).position;
-            cloneObject_LuggageItem.SetIsRandomColor(true);
+            cloneObject_LuggageItem.SetIsRandomColor(true , luaggage_color );
             cloneObject_LuggageItem.SetIsRandomSize(true);
         }
     }
@@ -89,7 +96,7 @@ public class LevelManager : MonoBehaviour
             clonedObject.transform.position = playerDropPoint.transform.position;
 
             clonedObject.transform.SetParent(clonePool.transform);
-            cloneObject_LuggageItem.SetIsRandomColor(true);
+            cloneObject_LuggageItem.SetIsRandomColor(true, luaggage_color);
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -99,7 +106,7 @@ public class LevelManager : MonoBehaviour
             clonedObject.transform.position = playerDropPoint_2.transform.position;
     
             clonedObject.transform.SetParent(clonePool.transform);
-            cloneObject_LuggageItem.SetIsRandomColor(true);
+            cloneObject_LuggageItem.SetIsRandomColor(true , luaggage_color);
         }
     }
 

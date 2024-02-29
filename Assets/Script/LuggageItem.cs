@@ -6,19 +6,17 @@ public class LuggageItem : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    public enum ColorType
-    {
-        red,
-        blue,
-        green,
-        yellow,
-        purple,
-        cyan,
-        orange,
-
-
-    }   
-    public ColorType luggageColor;
+    // public enum ColorType
+    // {
+    //     red,
+    //     blue,
+    //     green,
+    //     yellow,
+    //     purple,
+    //     cyan,
+    //     orange,
+    // }   
+    public string luggageColor;
 
     public int collisionCount = 0;
 
@@ -29,73 +27,71 @@ public class LuggageItem : MonoBehaviour
     
     [SerializeField] private bool IsRandonColor = true;
 
-    public bool SetIsRandomColor(bool value)
+    public bool SetIsRandomColor(bool value, string [] color_list )
     {
+        if (value == true){
+            luggageColor = GetRandomColor(color_list);
+        }
+        else{    
+            luggageColor = color_list[0];
+        }
+
         IsRandonColor = value;
         return IsRandonColor;
     }
 
-    public void SetIsRandomColor(string colortype )
-    {
-        
-    }
 
+    private string GetRandomColor(string[] color_list)
+    {
+        int randomIndex = Random.Range(0, color_list.Length);
+        return color_list[randomIndex];
+    }
 
 
     void Start()
     {
         sameLuggage.Add(gameObject);
-
-        // Set the luggage color
-        if (IsRandonColor)
-        {
-            ColorType previousColor = GetRandomColor(); // Store the previous color
-            do
-            {
-                luggageColor = GetRandomColor(); // Generate a new random color
-            }
-            while (luggageColor == previousColor); // Repeat until a different color is generated
-        }
         
         SetLuggageColor();
         
-        // if (IsRandonColor == true)
-        // {
-        //     luggageColor = GetRandomColor();  // redon color
-        // }
-        // SetLuggageColor();
     }
 
     void SetLuggageColor()
     {
-        Color color_ = new Color(0.0f, 0, 0.0f);
-        // Set the luggage color based on the enum value
+        Color color_;
+
+        // Set the luggage color based on the string value
         switch (luggageColor)
         {
-            case ColorType.red:
+            case "red": // Corrected syntax
                 color_ = Color.red;
                 break;
-            case ColorType.blue:
+            case "blue": // Corrected syntax
                 color_ = Color.blue;
                 break;
-            case ColorType.green:
-                color_= Color.green;
+            case "green": // Corrected syntax
+                color_ = Color.green;
                 break;
-            case ColorType.yellow:
-                color_= Color.yellow;
+            case "yellow": // Corrected syntax
+                color_ = Color.yellow;
                 break;
-            case ColorType.purple:
-                color_ = new Color(0.5f, 0, 0.5f); // Purple
+            case "purple": // Corrected syntax
+                color_ = new Color(0.5f, 0f, 0.5f); // Purple
                 break;
-            case ColorType.cyan:
+            case "cyan": // Corrected syntax
                 color_ = Color.cyan;
                 break;
-            case ColorType.orange:
-                color_ = new Color(1, 0.5f, 0); // Orange
+            case "orange": // Corrected syntax
+                color_ = new Color(1f, 0.5f, 0f); // Orange
+                break;
+            default:
+                color_ = Color.white; // Default color
                 break;
         }
+        
         GetComponent<Renderer>().material.color = color_;
     }
+
 
     void OnCollisionEnter(Collision collision)
     {
@@ -174,11 +170,11 @@ public class LuggageItem : MonoBehaviour
         }
     }
 
-    ColorType GetRandomColor()
-    {
-        // Get a random color from the enum
-        return (ColorType)Random.Range(0, System.Enum.GetValues(typeof(ColorType)).Length);
-    }
+    // ColorType GetRandomColor()
+    // {
+    //     // Get a random color from the enum
+    //     return (ColorType)Random.Range(0, System.Enum.GetValues(typeof(ColorType)).Length);
+    // }
 
     public bool SetIsRandomSize(bool value)
     {
