@@ -19,6 +19,8 @@ public class LuggageItem : MonoBehaviour
     public string luggageColor;
 
     public int collisionCount = 0;
+    
+    public GameObject suitcasePrefab;
 
      [SerializeField] private int damage = 1;
 
@@ -27,38 +29,39 @@ public class LuggageItem : MonoBehaviour
     
     [SerializeField] private bool IsRandonColor = true;
 
-    public bool SetIsRandomColor(bool value, string [] color_list )
-    {
-        if (value == true){
-            luggageColor = GetRandomColor(color_list);
-        }
-        else{    
-            luggageColor = color_list[0];
-        }
+    // public bool SetIsRandomColor(string [] color_list )
+    // {
+    //     if (value == true){
+    //         luggageColor = GetRandomColor(color_list);
+    //     }
+    //     else{    
+    //         luggageColor = color_list[0];
+    //     }
 
-        IsRandonColor = value;
-        return IsRandonColor;
-    }
+    //     IsRandonColor = value;
+    //     return IsRandonColor;
+    // }
+    
 
-
-    private string GetRandomColor(string[] color_list)
-    {
-        int randomIndex = Random.Range(0, color_list.Length);
-        return color_list[randomIndex];
-    }
+    // private string GetRandomColor(string[] color_list)
+    // {
+    //     int randomIndex = Random.Range(0, color_list.Length);
+    //     return color_list[randomIndex];
+    // }
 
 
     void Start()
     {
         sameLuggage.Add(gameObject);
         
-        SetLuggageColor();
+        // SetLuggageColor();
         
     }
 
-    void SetLuggageColor()
+    public void SetLuggageColor( string luggageColor_ )
     {
         Color color_;
+        luggageColor = luggageColor_;
 
         // Set the luggage color based on the string value
         switch (luggageColor)
@@ -89,7 +92,7 @@ public class LuggageItem : MonoBehaviour
                 break;
         }
         
-        GetComponent<Renderer>().material.color = color_;
+        suitcasePrefab.GetComponent<Renderer>().material.color = color_;
     }
 
 

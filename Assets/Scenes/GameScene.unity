@@ -355,7 +355,7 @@ Transform:
   m_GameObject: {fileID: 115351761}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.85, y: 2.87, z: 4.58}
+  m_LocalPosition: {x: -1.35, y: 2.87, z: 4.58}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8976,7 +8976,7 @@ Transform:
   m_GameObject: {fileID: 1462829193}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.34, y: 2.87, z: 4.58}
+  m_LocalPosition: {x: -3.85, y: 2.87, z: 4.58}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9174,7 +9174,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh25136
+  m_Name: pb_Mesh25152
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -9744,6 +9744,14 @@ MonoBehaviour:
   luaggageitemPrefab: {fileID: 6447594443134316143, guid: 8270c6db160e98a41a4c02b21eaf5e34, type: 3}
   playerDropPoint: {fileID: 1462829193}
   playerDropPoint_2: {fileID: 115351761}
+  luaggage_color:
+  - red
+  - blue
+  - green
+  - yellow
+  - purple
+  - cyan
+  - orange
   clonePool: {fileID: 1922510845}
   OutBoard_Object: {fileID: 0}
   playerScore: 0
