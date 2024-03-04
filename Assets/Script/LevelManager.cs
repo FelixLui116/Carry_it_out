@@ -95,7 +95,8 @@ public class LevelManager : MonoBehaviour
         // start the game with HP = 3
         uiManager.healthText.text = playerHealth.ToString();
 
-        NextColor(true , true , true);
+        NextColor(true , true , false);
+        NextColor(true , false , true);
     }
 
     public void UpdateScore(int score)
