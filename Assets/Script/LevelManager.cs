@@ -164,12 +164,15 @@ public class LevelManager : MonoBehaviour
             if (pos_1 == true)
             {
                 playerDrop_color = randomColor;
-                uiManager.Cube_Q.color = SetLuggageColor(luaggage_color[playerDrop_color]);
+                
+                uiManager.Cube_Q.GetComponent<Renderer>().material.color = SetLuggageColor(luaggage_color[playerDrop_color]);
+                // uiManager.Cube_Q.color = SetLuggageColor(luaggage_color[playerDrop_color]);
             }
             else if (pos_2 == true)
             {
                 playerDrop_color_2 = randomColor;
-                uiManager.Cube_E.color = SetLuggageColor(luaggage_color[playerDrop_color_2]);
+                uiManager.Cube_E.GetComponent<Renderer>().material.color = SetLuggageColor(luaggage_color[playerDrop_color_2]);
+                // uiManager.Cube_E.color = SetLuggageColor(luaggage_color[playerDrop_color_2]);
             }
         }
         else

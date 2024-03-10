@@ -9,8 +9,10 @@ public class UIManager : MonoBehaviour
     public Text scoreText;
     public Text healthText;
     public Text timeText;
-    public Image Cube_Q;
-    public Image Cube_E;
+    // public Image Cube_Q;
+    // public Image Cube_E;
+    public GameObject Cube_Q;
+    public GameObject Cube_E;
     void Start()
     {
         
