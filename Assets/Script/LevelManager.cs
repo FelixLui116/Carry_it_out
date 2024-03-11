@@ -25,6 +25,8 @@ public class LevelManager : MonoBehaviour
     public int playerScore = 0;
     public int playerHealth = 3; // 3 life
     public UIManager  uiManager;
+    [SerializeField] private float QE_delayTimer =0;
+    private float QE_delayDuration = 1;
 
 
     public Color SetLuggageColor( string luggageColor)
@@ -123,30 +125,41 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // set the Q E button click to clone the luaggage in the playerDropPoint
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            GameObject clonedObject = Instantiate(luaggageitemPrefab);
-            LuggageItem cloneObject_LuggageItem = clonedObject.GetComponent<LuggageItem>();
-            clonedObject.transform.position = playerDropPoint.transform.position;
+        // add delay time for Q E button
+        QE_delayTimer += Time.deltaTime;
 
-            clonedObject.transform.SetParent(clonePool.transform);
-            // cloneObject_LuggageItem.SetIsRandomColor(true, luaggage_color);
-            cloneObject_LuggageItem.SetLuggageColor( luaggage_color[playerDrop_color]);
-            NextColor(true , true , false);
-        }
-        if (Input.GetKeyDown(KeyCode.E))
+        if (QE_delayTimer > QE_delayDuration)
         {
-            GameObject clonedObject = Instantiate(luaggageitemPrefab);
-            LuggageItem cloneObject_LuggageItem = clonedObject.GetComponent<LuggageItem>();
+            // set the Q E button click to clone the luaggage in the playerDropPoint
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                QE_delayTimer = 0.0f; // Reset the delay timer
+                GameObject clonedObject = Instantiate(luaggageitemPrefab);
+                LuggageItem cloneObject_LuggageItem = clonedObject.GetComponent<LuggageItem>();
+                clonedObject.transform.position = playerDropPoint.transform.position;
 
-            clonedObject.transform.position = playerDropPoint_2.transform.position;
-    
-            clonedObject.transform.SetParent(clonePool.transform);
-            // cloneObject_LuggageItem.SetIsRandomColor(true , luaggage_color);
-            cloneObject_LuggageItem.SetLuggageColor( luaggage_color[playerDrop_color_2]);
-            NextColor(true , false , true);
+                clonedObject.transform.SetParent(clonePool.transform);
+                // cloneObject_LuggageItem.SetIsRandomColor(true, luaggage_color);
+                cloneObject_LuggageItem.SetLuggageColor( luaggage_color[playerDrop_color]);
+                NextColor(true , true , false);
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                
+                QE_delayTimer = 0.0f; // Reset the delay timer
+                GameObject clonedObject = Instantiate(luaggageitemPrefab);
+                LuggageItem cloneObject_LuggageItem = clonedObject.GetComponent<LuggageItem>();
+
+                clonedObject.transform.position = playerDropPoint_2.transform.position;
+
+                clonedObject.transform.SetParent(clonePool.transform);
+                // cloneObject_LuggageItem.SetIsRandomColor(true , luaggage_color);
+                cloneObject_LuggageItem.SetLuggageColor( luaggage_color[playerDrop_color_2]);
+                NextColor(true , false , true);
+            }
         }
+
+        
     }
     private int GetRandomColor()
     {
