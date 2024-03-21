@@ -7,16 +7,22 @@ public class LevelManager : MonoBehaviour
     // [SerializeField] private List<GameObject> clonePoint = new List<GameObject>();
     [SerializeField] private GameObject clonePool_Obj;
 
-    public GameObject luaggageitemPrefab;
+    // public GameObject luaggageitemPrefab;
 
     public GameObject playerDropPoint;   
     public GameObject playerDropPoint_2; 
-
     
-    [SerializeField] private int playerDrop_color;   
-    [SerializeField] private int playerDrop_color_2; 
+    // private bool isItem_1 = false;  // true = skill item , false = luggage item
+    // private bool isItem_2 = false;  // true = skill item , false = luggage item
+    
+    private int [] player_Item_QE = new int[2];  // check which skill item 
+    [SerializeField] private GameObject[] player_Item_Obj = new GameObject[3];
+    private int playerDrop_color_1;   
+    private int playerDrop_color_2; 
+
 
     [SerializeField] private string [] luaggage_color = new string[7] {"red", "blue", "green", "yellow", "purple", "cyan", "orange"};
+    [SerializeField] private GameObject [] skill_Item = new GameObject[2];
 
     public GameObject clonePool;
     
@@ -26,42 +32,9 @@ public class LevelManager : MonoBehaviour
     public int playerHealth = 3; // 3 life
     public UIManager  uiManager;
     [SerializeField] private float QE_delayTimer =0;
-    private float QE_delayDuration = 1;
+    private float QE_delayDuration = 0.5f;
 
 
-    public Color SetLuggageColor( string luggageColor)
-    {
-        Color color_;
-        // Set the luggage color based on the string value
-        switch (luggageColor)
-        {
-            case "red": // Corrected syntax
-                color_ = Color.red;
-                break;
-            case "blue": // Corrected syntax
-                color_ = Color.blue;
-                break;
-            case "green": // Corrected syntax
-                color_ = Color.green;
-                break;
-            case "yellow": // Corrected syntax
-                color_ = Color.yellow;
-                break;
-            case "purple": // Corrected syntax
-                color_ = new Color(0.5f, 0f, 0.5f); // Purple
-                break;
-            case "cyan": // Corrected syntax
-                color_ = Color.cyan;
-                break;
-            case "orange": // Corrected syntax
-                color_ = new Color(1f, 0.5f, 0f); // Orange
-                break;
-            default:
-                color_ = Color.white; // Default color
-                break;
-        }
-        return color_;
-    }
 
 
     // Start is called before the first frame update
@@ -71,7 +44,7 @@ public class LevelManager : MonoBehaviour
         
         // for (int i = 0; i < clonePoint.Count; i++)
         // {
-        //     GameObject clonedObject = Instantiate(luaggageitemPrefab);
+        //     GameObject clonedObject = Instantiate(player_Item_Obj[0]);
         //     LuggageItem cloneObject_LuggageItem = clonedObject.GetComponent<LuggageItem>();
 
         //       clonedObject.transform.SetParent(clonePoint[i].transform);
@@ -83,7 +56,7 @@ public class LevelManager : MonoBehaviour
         // for loop to clone luggage item on each clonePool_Obj point
         for (int i = 0; i < clonePool_Obj.transform.childCount; i++)
         {
-            GameObject clonedObject = Instantiate(luaggageitemPrefab);
+            GameObject clonedObject = Instantiate(player_Item_Obj[0]);
             LuggageItem cloneObject_LuggageItem = clonedObject.GetComponent<LuggageItem>();
 
             clonedObject.transform.SetParent(clonePool_Obj.transform.GetChild(i));
@@ -96,9 +69,12 @@ public class LevelManager : MonoBehaviour
 
         // start the game with HP = 3
         uiManager.healthText.text = playerHealth.ToString();
-
-        NextColor(true , true , false);
-        NextColor(true , false , true);
+        //////////////////////////////  
+        // NextColor(true , true , false);
+        // NextColor(true , false , true);
+        //////////////////////////////
+        Random_item(true , false );  // left
+        Random_item(false , true );  // right
     }
 
     public void UpdateScore(int score)
@@ -134,33 +110,80 @@ public class LevelManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 QE_delayTimer = 0.0f; // Reset the delay timer
-                GameObject clonedObject = Instantiate(luaggageitemPrefab);
-                LuggageItem cloneObject_LuggageItem = clonedObject.GetComponent<LuggageItem>();
-                clonedObject.transform.position = playerDropPoint.transform.position;
+                CloneLuggageItem_press(playerDropPoint, playerDrop_color_1, clonePool);
 
-                clonedObject.transform.SetParent(clonePool.transform);
-                // cloneObject_LuggageItem.SetIsRandomColor(true, luaggage_color);
-                cloneObject_LuggageItem.SetLuggageColor( luaggage_color[playerDrop_color]);
-                NextColor(true , true , false);
+                uiManager.InvisibleObejct("Q", QE_delayDuration);
+                Random_item(true , false );  // left
             }
             if (Input.GetKeyDown(KeyCode.E))
             {
                 
                 QE_delayTimer = 0.0f; // Reset the delay timer
-                GameObject clonedObject = Instantiate(luaggageitemPrefab);
-                LuggageItem cloneObject_LuggageItem = clonedObject.GetComponent<LuggageItem>();
+                CloneLuggageItem_press(playerDropPoint_2, playerDrop_color_2 , clonePool);
 
-                clonedObject.transform.position = playerDropPoint_2.transform.position;
-
-                clonedObject.transform.SetParent(clonePool.transform);
-                // cloneObject_LuggageItem.SetIsRandomColor(true , luaggage_color);
-                cloneObject_LuggageItem.SetLuggageColor( luaggage_color[playerDrop_color_2]);
-                NextColor(true , false , true);
+                uiManager.InvisibleObejct("E", QE_delayDuration);
+                Random_item(false , true );  // right
             }
         }
-
-        
     }
+
+    //To Do  clone itme baseOn  player_Item_QE[0]
+
+    private void CloneSkillItem_press (GameObject playerDropPoint , GameObject parent_obj = null){
+        GameObject clonedObject = Instantiate(skill_Item[0]);
+        clonedObject.transform.position = playerDropPoint.transform.position;
+        clonedObject.transform.SetParent(clonePool.transform);
+    }
+
+
+    private void CloneLuggageItem_press (GameObject playerDropPoint, int _color , GameObject parent_obj = null){
+        // Clone the luggage item
+        GameObject clonedObject = Instantiate(player_Item_Obj[0]);
+        LuggageItem cloneObject_LuggageItem = clonedObject.GetComponent<LuggageItem>();
+        
+        clonedObject.transform.position = playerDropPoint.transform.position;
+        clonedObject.transform.SetParent(parent_obj.transform);
+        cloneObject_LuggageItem.SetLuggageColor( luaggage_color[_color]);
+    }
+
+
+
+    private void Random_item(bool pos_1 , bool pos_2 )  // is the skill item or luggage item
+    {
+        int random_item = Random.Range(0, skill_Item.Length );
+        
+        // int random_item = 0;
+        if (random_item == 0)   // Clone Luggage
+        {
+            // Debug.Log( "luggage Item");
+            if (pos_1 == true){
+                player_Item_QE[0] = random_item;
+                Show_Object_ByChild(uiManager.Cube_Q , random_item);
+                uiManager.Cube_Q[random_item].transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = SetLuggageColor(luaggage_color[playerDrop_color_1]);
+            }
+            else{
+                player_Item_QE[1] = random_item;
+                Show_Object_ByChild(uiManager.Cube_E , random_item);
+                uiManager.Cube_E[random_item].transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = SetLuggageColor(luaggage_color[playerDrop_color_2]);
+            }
+
+            NextColor(true , pos_1 , pos_2);
+        }
+        else  // Clone skill item
+        {
+            // Debug.Log( "Skill Item");
+
+            if (pos_1 == true){
+                player_Item_QE[0] = random_item;
+                Show_Object_ByChild(uiManager.Cube_Q , random_item);
+            }
+            else{
+                player_Item_QE[1] = random_item;
+                Show_Object_ByChild(uiManager.Cube_E , random_item);
+            }
+        }
+    }
+
     private int GetRandomColor()
     {
         // Generate a random index within the bounds of the array
@@ -174,32 +197,64 @@ public class LevelManager : MonoBehaviour
         if (IsRandonColor == true)
         {
             int randomColor = GetRandomColor();
+            
             if (pos_1 == true)
             {
-                playerDrop_color = randomColor;
-                
-                uiManager.Cube_Q.GetComponent<Renderer>().material.color = SetLuggageColor(luaggage_color[playerDrop_color]);
-                // uiManager.Cube_Q.color = SetLuggageColor(luaggage_color[playerDrop_color]);
+                playerDrop_color_1 = randomColor;
             }
             else if (pos_2 == true)
             {
                 playerDrop_color_2 = randomColor;
-                uiManager.Cube_E.GetComponent<Renderer>().material.color = SetLuggageColor(luaggage_color[playerDrop_color_2]);
-                // uiManager.Cube_E.color = SetLuggageColor(luaggage_color[playerDrop_color_2]);
             }
         }
-        else
-        {
-            
+        else{
         }
     }
 
-    // void CloneLuggage()
-    // {
-    //     GameObject clonedObject = Instantiate(luaggageitemPrefab);
-    //     LuggageItem cloneObject_LuggageItem = clonedObject.GetComponent<LuggageItem>();
+    public void  Show_Object_ByChild(GameObject[] objArray , int index)
+    {
+        foreach (GameObject obj in objArray)
+        {
+            if (obj != null)
+            {
+                obj.transform.gameObject.SetActive(false);
+            }
+        }
+        objArray[index].gameObject.SetActive(true);
+    }
 
-    //     clonedObject.transform.position = playerDropPoint.transform.position;
-    //     cloneObject_LuggageItem.SetIsRandomColor(true);
-    // }
+        public Color SetLuggageColor( string luggageColor)
+    {
+        Color color_;
+        // Set the luggage color based on the string value
+        switch (luggageColor)
+        {
+            case "red": // Corrected syntax
+                color_ = Color.red;
+                break;
+            case "blue": // Corrected syntax
+                color_ = Color.blue;
+                break;
+            case "green": // Corrected syntax
+                color_ = Color.green;
+                break;
+            case "yellow": // Corrected syntax
+                color_ = Color.yellow;
+                break;
+            case "purple": // Corrected syntax
+                color_ = new Color(0.5f, 0f, 0.5f); // Purple
+                break;
+            case "cyan": // Corrected syntax
+                color_ = Color.cyan;
+                break;
+            case "orange": // Corrected syntax
+                color_ = new Color(1f, 0.5f, 0f); // Orange
+                break;
+            default:
+                color_ = Color.white; // Default color
+                break;
+        }
+        return color_;
+    }
+
 }
