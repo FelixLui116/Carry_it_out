@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour
     // private bool isItem_1 = false;  // true = skill item , false = luggage item
     // private bool isItem_2 = false;  // true = skill item , false = luggage item
     
-    private int [] player_Item_QE = new int[2];  // check which skill item 
+    [SerializeField] private int [] player_Item_QE = new int[2];  // check which skill item 
     [SerializeField] private GameObject[] player_Item_Obj = new GameObject[3];
     private int playerDrop_color_1;   
     private int playerDrop_color_2; 
@@ -110,7 +110,8 @@ public class LevelManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 QE_delayTimer = 0.0f; // Reset the delay timer
-                CloneLuggageItem_press(playerDropPoint, playerDrop_color_1, clonePool);
+                // CloneLuggageItem_press(playerDropPoint, playerDrop_color_1, clonePool);
+                CloneItem_press(player_Item_QE[0], playerDropPoint , clonePool);
 
                 uiManager.InvisibleObejct("Q", QE_delayDuration);
                 Random_item(true , false );  // left
@@ -119,7 +120,8 @@ public class LevelManager : MonoBehaviour
             {
                 
                 QE_delayTimer = 0.0f; // Reset the delay timer
-                CloneLuggageItem_press(playerDropPoint_2, playerDrop_color_2 , clonePool);
+                // CloneLuggageItem_press(playerDropPoint_2, playerDrop_color_2 , clonePool);
+                CloneItem_press(player_Item_QE[1], playerDropPoint_2 , clonePool);
 
                 uiManager.InvisibleObejct("E", QE_delayDuration);
                 Random_item(false , true );  // right
@@ -127,10 +129,22 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    //To Do  clone itme baseOn  player_Item_QE[0]
+    //clone itme baseOn  player_Item_QE[0]
+    public void CloneItem_press (int item_QE, GameObject playerDropPoint , GameObject parent_obj = null){
+        
+        
+        if (item_QE == 0)  // Clone Luggage
+        {
+            CloneLuggageItem_press(playerDropPoint, playerDrop_color_1, parent_obj);
+        }
+        else  // Clone skill item
+        {
+            CloneSkillItem_press( player_Item_Obj[item_QE], playerDropPoint, parent_obj);
+        }
+    }
 
-    private void CloneSkillItem_press (GameObject playerDropPoint , GameObject parent_obj = null){
-        GameObject clonedObject = Instantiate(skill_Item[0]);
+    private void CloneSkillItem_press (GameObject skill_item_prefeb, GameObject playerDropPoint , GameObject parent_obj = null){
+        GameObject clonedObject = Instantiate(skill_item_prefeb);
         clonedObject.transform.position = playerDropPoint.transform.position;
         clonedObject.transform.SetParent(clonePool.transform);
     }
@@ -150,7 +164,7 @@ public class LevelManager : MonoBehaviour
 
     private void Random_item(bool pos_1 , bool pos_2 )  // is the skill item or luggage item
     {
-        int random_item = Random.Range(0, skill_Item.Length );
+        int random_item = Random.Range(0, skill_Item.Length +1 );
         
         // int random_item = 0;
         if (random_item == 0)   // Clone Luggage

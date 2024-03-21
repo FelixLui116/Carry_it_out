@@ -10612,6 +10612,7 @@ MonoBehaviour:
   clonePool_Obj: {fileID: 1922510845}
   playerDropPoint: {fileID: 1462829193}
   playerDropPoint_2: {fileID: 115351761}
+  player_Item_QE: 0000000000000000
   player_Item_Obj:
   - {fileID: 6447594443134316143, guid: 8270c6db160e98a41a4c02b21eaf5e34, type: 3}
   - {fileID: 6447594443134316143, guid: 9eed789c70cbc444f996cae3028f73f8, type: 3}

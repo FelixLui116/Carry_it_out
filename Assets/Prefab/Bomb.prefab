@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4987165148209471747}
   - component: {fileID: 8482899269756456535}
   - component: {fileID: 7880236361843207785}
+  - component: {fileID: 8031152696182991510}
   m_Layer: 0
   m_Name: Bomb
   m_TagString: Luggage
@@ -134,6 +135,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8031152696182991510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6447594443134316143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd0632dc670d0114d8e73411b292061f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionPrefab: {fileID: 0}
+  explosionRadius: 5
 --- !u!1 &9007253453588707456
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,6 +161,7 @@ GameObject:
   - component: {fileID: 8138539358845637707}
   - component: {fileID: 2494454846972451847}
   - component: {fileID: 7617278179962386068}
+  - component: {fileID: 699417325134440015}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -239,3 +255,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &699417325134440015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9007253453588707456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd0632dc670d0114d8e73411b292061f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionPrefab: {fileID: 0}
+  explosionRadius: 5
