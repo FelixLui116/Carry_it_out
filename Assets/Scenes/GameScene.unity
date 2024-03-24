@@ -10617,6 +10617,8 @@ MonoBehaviour:
   - {fileID: 6447594443134316143, guid: 8270c6db160e98a41a4c02b21eaf5e34, type: 3}
   - {fileID: 6447594443134316143, guid: 9eed789c70cbc444f996cae3028f73f8, type: 3}
   - {fileID: 6447594443134316143, guid: 18a650903f177d34ab1950b8c04d632e, type: 3}
+  Random_Bomb: 30
+  Random_magnet: 20
   luaggage_color:
   - red
   - blue
@@ -10633,7 +10635,6 @@ MonoBehaviour:
   playerScore: 0
   playerHealth: 3
   uiManager: {fileID: 480756405}
-  QE_delayTimer: 0
 --- !u!4 &1892302014
 Transform:
   m_ObjectHideFlags: 0

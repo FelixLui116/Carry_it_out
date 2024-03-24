@@ -20,6 +20,10 @@ public class LevelManager : MonoBehaviour
     private int playerDrop_color_1;   
     private int playerDrop_color_2; 
 
+     [SerializeField] private int Random_Bomb = 30;
+     [SerializeField] private int Random_magnet = 20;
+
+
 
     [SerializeField] private string [] luaggage_color = new string[7] {"red", "blue", "green", "yellow", "purple", "cyan", "orange"};
     [SerializeField] private GameObject [] skill_Item = new GameObject[2];
@@ -31,7 +35,7 @@ public class LevelManager : MonoBehaviour
     public int playerScore = 0;
     public int playerHealth = 3; // 3 life
     public UIManager  uiManager;
-    [SerializeField] private float QE_delayTimer =0;
+    private float QE_delayTimer =0;
     private float QE_delayDuration = 0.5f;
 
 
@@ -160,16 +164,37 @@ public class LevelManager : MonoBehaviour
         cloneObject_LuggageItem.SetLuggageColor( luaggage_color[_color]);
     }
 
-
+    private void Randon_item_skill(bool pos_1 , int random_item)
+    {
+        if (pos_1 == true){
+            player_Item_QE[0] = random_item;
+            Show_Object_ByChild(uiManager.Cube_Q , random_item);
+        }
+        else{
+            player_Item_QE[1] = random_item;
+            Show_Object_ByChild(uiManager.Cube_E , random_item);
+        }
+    }
 
     private void Random_item(bool pos_1 , bool pos_2 )  // is the skill item or luggage item
     {
-        int random_item = Random.Range(0, skill_Item.Length +1 );
         
-        // int random_item = 0;
-        if (random_item == 0)   // Clone Luggage
+        int randomValue = Random.Range(0, 100);
+        Debug.Log("randomValue: " +randomValue);
+        if (randomValue < Random_Bomb)
         {
-            // Debug.Log( "luggage Item");
+            // 10% 的概率选择炸弹 // 在这里处理炸弹的生成逻辑
+            Randon_item_skill(pos_1 , 2);
+        }
+        else if (randomValue < Random_Bomb + Random_magnet)
+        {
+            // 10% 的概率选择磁铁// 在这里处理磁铁的生成逻辑
+            Randon_item_skill(pos_1 , 1);
+        }
+        else
+        {
+            // 剩余 80% 的概率选择行李// 在这里处理行李的生成逻辑
+            int random_item = 0;
             if (pos_1 == true){
                 player_Item_QE[0] = random_item;
                 Show_Object_ByChild(uiManager.Cube_Q , random_item);
@@ -183,19 +208,39 @@ public class LevelManager : MonoBehaviour
 
             NextColor(true , pos_1 , pos_2);
         }
-        else  // Clone skill item
-        {
-            // Debug.Log( "Skill Item");
 
-            if (pos_1 == true){
-                player_Item_QE[0] = random_item;
-                Show_Object_ByChild(uiManager.Cube_Q , random_item);
-            }
-            else{
-                player_Item_QE[1] = random_item;
-                Show_Object_ByChild(uiManager.Cube_E , random_item);
-            }
-        }
+
+        // int random_item = Random.Range(0, skill_Item.Length +1 );
+        // // int random_item = 0;
+        // if (random_item == 0)   // Clone Luggage
+        // {
+        //     // Debug.Log( "luggage Item");
+        //     if (pos_1 == true){
+        //         player_Item_QE[0] = random_item;
+        //         Show_Object_ByChild(uiManager.Cube_Q , random_item);
+        //         uiManager.Cube_Q[random_item].transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = SetLuggageColor(luaggage_color[playerDrop_color_1]);
+        //     }
+        //     else{
+        //         player_Item_QE[1] = random_item;
+        //         Show_Object_ByChild(uiManager.Cube_E , random_item);
+        //         uiManager.Cube_E[random_item].transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = SetLuggageColor(luaggage_color[playerDrop_color_2]);
+        //     }
+
+        //     NextColor(true , pos_1 , pos_2);
+        // }
+        // else  // Clone skill item
+        // {
+        //     // Debug.Log( "Skill Item");
+
+        //     if (pos_1 == true){
+        //         player_Item_QE[0] = random_item;
+        //         Show_Object_ByChild(uiManager.Cube_Q , random_item);
+        //     }
+        //     else{
+        //         player_Item_QE[1] = random_item;
+        //         Show_Object_ByChild(uiManager.Cube_E , random_item);
+        //     }
+        // }
     }
 
     private int GetRandomColor()
