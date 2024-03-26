@@ -23,40 +23,65 @@ public class LevelManager : MonoBehaviour
      [SerializeField] private int Random_Bomb = 30;
      [SerializeField] private int Random_magnet = 20;
 
+    // 定义大圈和小圈的半径
+    private float radiusBig = 4f;
+    private float radiusSmall = 3.6f;
+    
+    [SerializeField] private Transform centerPosition; // 中心点位置
 
+    /// <summary>
+    /// 
+    /// </summary>
 
     [SerializeField] private string [] luaggage_color = new string[7] {"red", "blue", "green", "yellow", "purple", "cyan", "orange"};
     [SerializeField] private GameObject [] skill_Item = new GameObject[2];
 
-    public GameObject clonePool;
-    
     public GameObject OutBoard_Object;
     
     public int playerScore = 0;
     public int playerHealth = 3; // 3 life
     public UIManager  uiManager;
     private float QE_delayTimer =0;
-    private float QE_delayDuration = 0.5f;
+    private float QE_delayDuration = 1f;
 
 
 
+    // 在平面上生成随机点
+    private Vector3 GetRandomPointOnPlane(float radius)
+    {
+        return new Vector3(Random.Range(-radius, radius), 0f, Random.Range(-radius, radius));
+    }
+    private void RandomRadius_cloneLuggat ()
+    {
+        // 获取当前物体的位置作为中心点
+        Vector3 center = centerPosition.position;
+        // 生成对象的数量
+        int numberOfObjects = 2;
+
+        // 生成对象
+        for (int i = 0; i < numberOfObjects; i++)
+        {
+            // 在radiusBig范围内生成随机点
+            Vector3 randomPoint = GetRandomPointOnPlane(radiusBig);
+
+            // 如果随机点在radiusSmall范围内，则重新生成新的点，直到找到一个在所需范围内的点
+            while (randomPoint.magnitude < radiusSmall)
+            {
+                randomPoint = GetRandomPointOnPlane(radiusBig);
+            }
+            // 实例化对象
+            GameObject clonedObject = Instantiate(player_Item_Obj[0], center + randomPoint, Quaternion.identity);
+            // clonedObject.transform.SetParent(clonePool_Obj.transform);
+            LuggageItem cloneObject_LuggageItem = clonedObject.GetComponent<LuggageItem>();
+            cloneObject_LuggageItem.SetLuggageColor( luaggage_color[GetRandomColor()]);
+            cloneObject_LuggageItem.SetIsRandomSize(true);
+            
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        // for loop to clone luggage item on each clone point
-        
-        // for (int i = 0; i < clonePoint.Count; i++)
-        // {
-        //     GameObject clonedObject = Instantiate(player_Item_Obj[0]);
-        //     LuggageItem cloneObject_LuggageItem = clonedObject.GetComponent<LuggageItem>();
-
-        //       clonedObject.transform.SetParent(clonePoint[i].transform);
-        //     clonedObject.transform.position = clonePoint[i].transform.position;
-            
-        //     cloneObject_LuggageItem.SetIsRandomColor(true);
-        // }
-
         // for loop to clone luggage item on each clonePool_Obj point
         for (int i = 0; i < clonePool_Obj.transform.childCount; i++)
         {
@@ -115,7 +140,7 @@ public class LevelManager : MonoBehaviour
             {
                 QE_delayTimer = 0.0f; // Reset the delay timer
                 // CloneLuggageItem_press(playerDropPoint, playerDrop_color_1, clonePool);
-                CloneItem_press(player_Item_QE[0], playerDropPoint , clonePool);
+                CloneItem_press(player_Item_QE[0], playerDropPoint , clonePool_Obj);
 
                 uiManager.InvisibleObejct("Q", QE_delayDuration);
                 Random_item(true , false );  // left
@@ -125,7 +150,7 @@ public class LevelManager : MonoBehaviour
                 
                 QE_delayTimer = 0.0f; // Reset the delay timer
                 // CloneLuggageItem_press(playerDropPoint_2, playerDrop_color_2 , clonePool);
-                CloneItem_press(player_Item_QE[1], playerDropPoint_2 , clonePool);
+                CloneItem_press(player_Item_QE[1], playerDropPoint_2 , clonePool_Obj);
 
                 uiManager.InvisibleObejct("E", QE_delayDuration);
                 Random_item(false , true );  // right
@@ -150,7 +175,7 @@ public class LevelManager : MonoBehaviour
     private void CloneSkillItem_press (GameObject skill_item_prefeb, GameObject playerDropPoint , GameObject parent_obj = null){
         GameObject clonedObject = Instantiate(skill_item_prefeb);
         clonedObject.transform.position = playerDropPoint.transform.position;
-        clonedObject.transform.SetParent(clonePool.transform);
+        clonedObject.transform.SetParent(clonePool_Obj.transform);
     }
 
 
