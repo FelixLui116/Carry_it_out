@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
@@ -19,9 +20,16 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject[] player_Item_Obj = new GameObject[3];
     private int playerDrop_color_1;   
     private int playerDrop_color_2; 
+    private int stageLevel = 1;
+    [SerializeField]private int stageLevel_counter = 0;
 
-     [SerializeField] private int Random_Bomb = 30;
-     [SerializeField] private int Random_magnet = 20;
+
+    [SerializeField] private int Random_Bomb = 30;
+    [SerializeField] private int Random_magnet = 20;
+
+    
+    private float spawn_luaggage_timerCount = 0f;
+    [SerializeField] private float spawn_luaggage_timer = 5f;
 
     // 定义大圈和小圈的半径
     private float radiusBig = 4f;
@@ -56,7 +64,7 @@ public class LevelManager : MonoBehaviour
         // 获取当前物体的位置作为中心点
         Vector3 center = centerPosition.position;
         // 生成对象的数量
-        int numberOfObjects = 2;
+        int numberOfObjects = stageLevel;
 
         // 生成对象
         for (int i = 0; i < numberOfObjects; i++)
@@ -75,7 +83,14 @@ public class LevelManager : MonoBehaviour
             LuggageItem cloneObject_LuggageItem = clonedObject.GetComponent<LuggageItem>();
             cloneObject_LuggageItem.SetLuggageColor( luaggage_color[GetRandomColor()]);
             cloneObject_LuggageItem.SetIsRandomSize(true);
-            
+        }
+
+        
+        uiManager.stageLevelText.text = stageLevel.ToString();
+        stageLevel_counter += 1;
+        if(stageLevel_counter >= 10) {
+            stageLevel_counter = 0;
+            stageLevel++;
         }
     }
 
@@ -96,12 +111,11 @@ public class LevelManager : MonoBehaviour
             cloneObject_LuggageItem.SetIsRandomSize(true);
         }
 
+        
+        spawn_luaggage_timerCount = 5f; // start set the timer to 5s.  // 5s to clone the luggage item 
         // start the game with HP = 3
         uiManager.healthText.text = playerHealth.ToString();
-        //////////////////////////////  
-        // NextColor(true , true , false);
-        // NextColor(true , false , true);
-        //////////////////////////////
+
         Random_item(true , false );  // left
         Random_item(false , true );  // right
     }
@@ -110,6 +124,7 @@ public class LevelManager : MonoBehaviour
     {
         playerScore += score;
         uiManager.scoreText.text = playerScore.ToString();
+
     }
 
     // check Box collider OutBoard_Object for luggage item
@@ -125,7 +140,20 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    private void UpdateUITimer_Count(){
+        float ratio = spawn_luaggage_timerCount / spawn_luaggage_timer; // 5秒是总时间
+        uiManager.TimeBar.fillAmount = ratio;
+    }
 
+    private void FixedUpdate() {
+        spawn_luaggage_timerCount -= Time.deltaTime;
+        if (spawn_luaggage_timerCount <= 0)
+        {
+            RandomRadius_cloneLuggat();
+            spawn_luaggage_timerCount = spawn_luaggage_timer;
+        }
+        UpdateUITimer_Count();
+    }
 
     // Update is called once per frame
     void Update()
@@ -233,39 +261,6 @@ public class LevelManager : MonoBehaviour
 
             NextColor(true , pos_1 , pos_2);
         }
-
-
-        // int random_item = Random.Range(0, skill_Item.Length +1 );
-        // // int random_item = 0;
-        // if (random_item == 0)   // Clone Luggage
-        // {
-        //     // Debug.Log( "luggage Item");
-        //     if (pos_1 == true){
-        //         player_Item_QE[0] = random_item;
-        //         Show_Object_ByChild(uiManager.Cube_Q , random_item);
-        //         uiManager.Cube_Q[random_item].transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = SetLuggageColor(luaggage_color[playerDrop_color_1]);
-        //     }
-        //     else{
-        //         player_Item_QE[1] = random_item;
-        //         Show_Object_ByChild(uiManager.Cube_E , random_item);
-        //         uiManager.Cube_E[random_item].transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = SetLuggageColor(luaggage_color[playerDrop_color_2]);
-        //     }
-
-        //     NextColor(true , pos_1 , pos_2);
-        // }
-        // else  // Clone skill item
-        // {
-        //     // Debug.Log( "Skill Item");
-
-        //     if (pos_1 == true){
-        //         player_Item_QE[0] = random_item;
-        //         Show_Object_ByChild(uiManager.Cube_Q , random_item);
-        //     }
-        //     else{
-        //         player_Item_QE[1] = random_item;
-        //         Show_Object_ByChild(uiManager.Cube_E , random_item);
-        //     }
-        // }
     }
 
     private int GetRandomColor()
