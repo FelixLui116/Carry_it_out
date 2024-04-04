@@ -22,6 +22,8 @@ public class LuggageItem : MonoBehaviour
     
     public GameObject suitcasePrefab;
 
+    public GameObject effect_End_Prefab;
+
      [SerializeField] private int damage = 1;
 
     // [SerializeField] private GameObject[] sameluggage = new GameObject[4];  
@@ -122,6 +124,11 @@ public class LuggageItem : MonoBehaviour
                         // for sameLuggage destroy
                         foreach (GameObject item in sameLuggage)
                         {
+                            // clone the effect
+                            if (effect_End_Prefab != null){
+                                GameObject effect_End = Instantiate(effect_End_Prefab, item.transform.position, Quaternion.identity);
+                            }
+
                             // Debug.Log($"Destroy {item.name}");
                             Destroy(item);
                         }

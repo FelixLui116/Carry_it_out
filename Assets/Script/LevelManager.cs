@@ -32,7 +32,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private float spawn_luaggage_timer = 5f;
 
     // 定义大圈和小圈的半径
-    private float radiusBig = 4f;
+    private float radiusBig = 3.95f;
     private float radiusSmall = 3.6f;
     
     [SerializeField] private Transform centerPosition; // 中心点位置
@@ -239,7 +239,7 @@ public class LevelManager : MonoBehaviour
             // 10% 的概率选择炸弹 // 在这里处理炸弹的生成逻辑
             Randon_item_skill(pos_1 , 2);
         }
-        else if (randomValue < Random_Bomb + Random_magnet)
+        else if (randomValue > Random_Bomb && randomValue < Random_Bomb + Random_magnet)
         {
             // 10% 的概率选择磁铁// 在这里处理磁铁的生成逻辑
             Randon_item_skill(pos_1 , 1);

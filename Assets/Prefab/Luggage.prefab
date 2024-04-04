@@ -509,6 +509,7 @@ MonoBehaviour:
   luggageColor: 0
   collisionCount: 0
   suitcasePrefab: {fileID: 2585552942462461803}
+  effect_End_Prefab: {fileID: 1173262663564242, guid: 74be156f609f5804e898771fc2dbfe6f, type: 3}
   damage: 1
   sameLuggage: []
   IsRandonColor: 1
