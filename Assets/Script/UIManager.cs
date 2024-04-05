@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     public Text scoreText;
     public Text healthText;
     public Text stageLevelText;
+    public Text LevelUpText;
     // public Image Cube_Q;
     // public Image Cube_E;
     public GameObject [] Cube_Q;

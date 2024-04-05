@@ -22,6 +22,7 @@ public class LevelManager : MonoBehaviour
     private int playerDrop_color_2; 
     private int stageLevel = 1;
     [SerializeField]private int stageLevel_counter = 0;
+    [SerializeField]private int LevelUp_counter = 10;
 
 
     [SerializeField] private int Random_Bomb = 30;
@@ -88,7 +89,8 @@ public class LevelManager : MonoBehaviour
         
         uiManager.stageLevelText.text = stageLevel.ToString();
         stageLevel_counter += 1;
-        if(stageLevel_counter >= 10) {
+        uiManager.LevelUpText.text = stageLevel_counter+"/"+LevelUp_counter;
+        if(stageLevel_counter >= LevelUp_counter) {
             stageLevel_counter = 0;
             stageLevel++;
         }
@@ -115,6 +117,8 @@ public class LevelManager : MonoBehaviour
         spawn_luaggage_timerCount = 5f; // start set the timer to 5s.  // 5s to clone the luggage item 
         // start the game with HP = 3
         uiManager.healthText.text = playerHealth.ToString();
+        uiManager.stageLevelText.text = stageLevel.ToString();
+        uiManager.LevelUpText.text = stageLevel_counter+"/"+LevelUp_counter;
 
         Random_item(true , false );  // left
         Random_item(false , true );  // right
